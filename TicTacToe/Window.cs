@@ -7,6 +7,13 @@ namespace TicTacToe
 {
     class Window : GameWindow
     {
+        private char[,] _gameField = new char[,]
+        {
+            { ' ', 'x', ' ' },
+            { ' ', 'x', ' ' },
+            { '0', ' ', ' ' }
+        };
+
         // Called only once at the beginning
         protected override void OnLoad(EventArgs e)
         {
