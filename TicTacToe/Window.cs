@@ -19,9 +19,9 @@ namespace TicTacToe
         {
             base.OnLoad(e);
 
-            Title = "Tic Tac Toe";
-            Width = 256;
-            Height = 256;
+            Title = "Tic-Tac-Toe";
+            Width = 192;
+            Height = 192;
         }
 
         // Called 60 time per second before OnRenderFrame()
