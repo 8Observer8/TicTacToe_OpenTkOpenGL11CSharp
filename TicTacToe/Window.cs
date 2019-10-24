@@ -14,6 +14,13 @@ namespace TicTacToe
             { '0', ' ', ' ' }
         };
 
+        private enum GameObject
+        {
+            Empty, Cross, Zero
+        }
+
+        private float _tileSize = 64f;
+
         private bool _canDraw = false;
 
         // Called only once at the beginning
@@ -63,21 +70,83 @@ namespace TicTacToe
             // Set a triangle color
             //GL.Color3(0f, 1f, 0f);
 
-            GL.Begin(PrimitiveType.Triangles);
-            {
-                // Left top triangle
-                GL.TexCoord2(0f, 0f); GL.Vertex2(0f, 0f);
-                GL.TexCoord2(0f, 0.33f); GL.Vertex2(0f, 64f);
-                GL.TexCoord2(0.33f, 0f); GL.Vertex2(64f, 0f);
-                // Right bottom triangle
-                GL.TexCoord2(0f, 0.33f); GL.Vertex2(0f, 64f);
-                GL.TexCoord2(0.33f, 0.33f); GL.Vertex2(64f, 64f);
-                GL.TexCoord2(0.33f, 0f); GL.Vertex2(64f, 0f);
-            }
-            GL.End();
+            DrawGameField();
 
             // Swaps the front and back buffer
             SwapBuffers();
+        }
+
+        private void DrawGameField()
+        {
+            for (int row = 0; row < _gameField.GetLength(0); row++)
+            {
+                for (int col = 0; col < _gameField.GetLength(1); col++)
+                {
+                    if (_gameField[row, col] == 'x')
+                    {
+                        DrawGameObject(GameObject.Cross, col * _tileSize, row * _tileSize);
+                    }
+                    else if (_gameField[row, col] == ' ')
+                    {
+                        DrawGameObject(GameObject.Empty, col * _tileSize, row * _tileSize);
+                    }
+                    else if (_gameField[row, col] == '0')
+                    {
+                        DrawGameObject(GameObject.Zero, col * _tileSize, row * _tileSize);
+                    }
+                }
+            }
+        }
+
+        private void DrawGameObject(GameObject gameObject, float x, float y)
+        {
+            switch (gameObject)
+            {
+                case GameObject.Empty:
+                    GL.Begin(PrimitiveType.Triangles);
+                    {
+                        // Left top triangle
+                        GL.TexCoord2(0f, 0.66f); GL.Vertex2(x, y);
+                        GL.TexCoord2(0f, 1f); GL.Vertex2(x, y + _tileSize);
+                        GL.TexCoord2(0.33f, 0.66f); GL.Vertex2(x + _tileSize, y);
+                        // Right bottom triangle
+                        GL.TexCoord2(0f, 1f); GL.Vertex2(x, y + _tileSize);
+                        GL.TexCoord2(0.33f, 1f); GL.Vertex2(x + _tileSize, y + _tileSize);
+                        GL.TexCoord2(0.33f, 0.66f); GL.Vertex2(x + _tileSize, y);
+                    }
+                    GL.End();
+                    break;
+                case GameObject.Cross:
+                    GL.Begin(PrimitiveType.Triangles);
+                    {
+                        // Left top triangle
+                        GL.TexCoord2(0f, 0f); GL.Vertex2(x, y);
+                        GL.TexCoord2(0f, 0.33f); GL.Vertex2(x, y + _tileSize);
+                        GL.TexCoord2(0.33f, 0f); GL.Vertex2(x + _tileSize, y);
+                        // Right bottom triangle
+                        GL.TexCoord2(0f, 0.33f); GL.Vertex2(x, y + _tileSize);
+                        GL.TexCoord2(0.33f, 0.33f); GL.Vertex2(x + _tileSize, y + _tileSize);
+                        GL.TexCoord2(0.33f, 0f); GL.Vertex2(x + _tileSize, y);
+                    }
+                    GL.End();
+                    break;
+                case GameObject.Zero:
+                    GL.Begin(PrimitiveType.Triangles);
+                    {
+                        // Left top triangle
+                        GL.TexCoord2(0f, 0.33f); GL.Vertex2(x, y);
+                        GL.TexCoord2(0f, 0.66f); GL.Vertex2(x, y + _tileSize);
+                        GL.TexCoord2(0.33f, 0.33f); GL.Vertex2(x + _tileSize, y);
+                        // Right bottom triangle
+                        GL.TexCoord2(0f, 0.66f); GL.Vertex2(x, y + _tileSize);
+                        GL.TexCoord2(0.33f, 0.66f); GL.Vertex2(x + _tileSize, y + _tileSize);
+                        GL.TexCoord2(0.33f, 0.33f); GL.Vertex2(x + _tileSize, y);
+                    }
+                    GL.End();
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void Setup2DGraphics(float width, float height)
